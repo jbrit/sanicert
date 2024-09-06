@@ -11,21 +11,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function UserInfo({
   username,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const mutation = useMutation({
+    mutationFn: (data: FormData) =>
+      axios.create().post("/api/prove", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      }),
+  });
   const toast = useToast();
   const router = useRouter();
   const wasmRef = useRef<HTMLInputElement>(null!);
   const zkeyRef = useRef<HTMLInputElement>(null!);
   const resetForm = () => {
-    wasmRef.current.value = '';
-    zkeyRef.current.value = '';
+    wasmRef.current.value = "";
+    zkeyRef.current.value = "";
   };
   const patientData = getOrFakePatientData(username);
   useEffect(() => {
@@ -89,7 +96,10 @@ export default function UserInfo({
               onSubmit={async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
-                for (const key of (Object.keys(patientData) as (keyof PatientData)[]) ) formData.set(key, ""+patientData[key]);
+                for (const key of Object.keys(
+                  patientData
+                ) as (keyof PatientData)[])
+                  formData.set(key, "" + patientData[key]);
                 const zkey = formData.get("zkey");
                 const wasm = formData.get("wasm");
                 if (!zkey || !(zkey as File).name) {
@@ -108,6 +118,8 @@ export default function UserInfo({
                   });
                   return;
                 }
+                const mut = await mutation.mutateAsync(formData);
+                resetForm();
               }}
               className="text-white"
             >
@@ -122,8 +134,21 @@ export default function UserInfo({
                 </div>
               </div>
               <div className="pt-6">
-                <Button className="mr-4" type="submit">Generate</Button>
-                <Button type="reset" onClick={resetForm} variant="destructive">Clear Files</Button>
+                <Button
+                  className="mr-4"
+                  type="submit"
+                  disabled={mutation.isPending}
+                >
+                  Generate
+                </Button>
+                <Button
+                  type="reset"
+                  onClick={resetForm}
+                  variant="destructive"
+                  disabled={mutation.isPending}
+                >
+                  Clear Files
+                </Button>
               </div>
             </form>
           </CardContent>

@@ -54,7 +54,6 @@ export default async function handler(
           // reject proper wasm not provided
           return rej("wasm file not provided");
         }
-
         return res({
           ...parsedInfo.data,
           zkey: files["zkey"][0]["path"],

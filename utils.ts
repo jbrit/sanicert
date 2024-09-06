@@ -39,7 +39,10 @@ const wasmFile = "./circuit/medic.wasm"; // uploaded
 const zkeyFile = "./circuit/medic.zkey"; // uploaded
 
 export const generateProof = async (
-  { user_id, age, has_tb_vaccine, has_yellow_fever_vaccine }: PatientData,
+  { user_id, age, has_tb_vaccine, has_yellow_fever_vaccine, wasm, zkey }: PatientData & {
+    zkey: string;
+    wasm: string;
+  },
   signer: (msg: Uint8Array) => Signature
 ) => {
   const poseidon = await buildPoseidon();
@@ -66,8 +69,8 @@ export const generateProof = async (
         R8x: poseidon.F.toObject(signature.R8[0]),
         R8y: poseidon.F.toObject(signature.R8[1]),
       },
-      wasmFile,
-      zkeyFile
+      wasm,
+      zkey
     ),
   };
 };
