@@ -34,7 +34,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
             href="#"
-            target="_blank"
             rel="noopener noreferrer"
           >
             <Image
