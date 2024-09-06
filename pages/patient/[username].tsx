@@ -20,7 +20,7 @@ export default function UserInfo({
       });
       router.replace("/");
     }
-  }, []);
+  }, [patientData.username, router, toast, username]);
   return (
     <Layout>
       <main>
@@ -62,7 +62,7 @@ export default function UserInfo({
   );
 }
 
-type Info = { username: any };
+type Info = { username: string };
 
 export const getServerSideProps = (async (context) => {
   return { props: { username: context.params!.username as string } };
