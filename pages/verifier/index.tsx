@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function UserInfo({verifiers}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const {data: walletClient} = useWalletClient();
-    const [makeAttestation, setMakeAttestation] = useState<(schemaId: string, data: string) => Promise<any>>(null!);
+    const [makeAttestation, setMakeAttestation] = useState<(schemaId: string, data: string) => Promise<void>>(null!);
 
     useEffect(() => {
         const client = new SignProtocolClient(SpMode.OnChain, {
@@ -42,7 +42,7 @@ export default function UserInfo({verifiers}: InferGetServerSidePropsType<typeof
               <CardDescription>{verifier.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex space-x-4">
+              <div className="flex space-y-4 flex-col">
                 <Button variant="outline" asChild>
                   <a
                     href={verifier.zkey}
@@ -72,7 +72,7 @@ export default function UserInfo({verifiers}: InferGetServerSidePropsType<typeof
               </div>
             </CardContent>
             <CardFooter>
-              <p className="text-sm text-muted-foreground">Schema: {verifier.schema}</p>
+              <p className="text-sm text-muted-foreground"><a target="_blank" href={`https://testnet-scan.sign.global/schema/onchain_evm_84532_${verifier.schema}`}>Schema: {verifier.schema}</a></p>
             </CardFooter>
           </Card>
         ))}
@@ -118,6 +118,6 @@ type Verifier = {
     schema: string;
 };
 type Info = { verifiers: Verifier[]  };
-export const getServerSideProps = (async (context) => {
+export const getServerSideProps = (async () => {
   return { props: {verifiers: JSON.parse(await readFile("./verifiers.json", "utf-8")) as Verifier[]} };
 }) satisfies GetServerSideProps<Info>;

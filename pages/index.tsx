@@ -1,12 +1,14 @@
 import { DialogCloseButton } from "@/components/recordmodal";
 import Layout from "@/components/layout";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
     <Layout>
       <main className="font-[family-name:var(--font-geist-sans)] text-lg">
         <p className="mb-2">
-          This is a private medical data attestation protocol.
+          This is a private, permissionless medical data attestation protocol.
           <br />
           Uses{" "}
           <a
@@ -21,7 +23,11 @@ export default function Home() {
           <br />
           Intriguing Right :{")"}.<br />
         </p>
+        <div className="flex space-x-4">
+
         <DialogCloseButton />
+        <Link href="/verifier"><Button variant="outline">Make Attestation</Button></Link>
+        </div>
       </main>
     </Layout>
   );

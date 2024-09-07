@@ -24,7 +24,7 @@ export function DialogCloseButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Get Started</Button>
+        <Button variant="secondary">Get Started</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-zinc-950">
         <DialogHeader>
