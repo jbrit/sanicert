@@ -77,7 +77,7 @@ export default async function handler(
       }
       return res.status(200).json({user_id, timestamp, proof, packedProof});
     } catch (error) {
-      return res.status(400).json({message: error});
+      return res.status(400).json({message: JSON.stringify(error)});
     }
   }
   return res.status(405).json({ error: { message: "Unsupported Request :(" } });

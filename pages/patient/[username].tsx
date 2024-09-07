@@ -128,9 +128,17 @@ export default function UserInfo({
                   });
                   return;
                 }
-                const mut = await mutation.mutateAsync(formData);
-                resetForm();
-                setPackedProof(mut.data.packedProof);
+                try {
+                  const mut = await mutation.mutateAsync(formData);
+                  resetForm();
+                  setPackedProof(mut.data.packedProof);
+                } catch (error) {
+                  toast.toast({
+                    title: "Could not generate proof",
+                    variant: "destructive"
+                  })
+                  console.error(error);
+                }
               }}
               className="text-white"
             >

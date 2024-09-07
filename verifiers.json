@@ -4,23 +4,23 @@
     "description": "Just uses the default circuit to attest a user has valid medical data.",
     "zkey": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.zkey",
     "wasm": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.wasm",
-    "isp_hook": "0x1F83d49871683e848D63AdfDE186Fd0c4d929362",
-    "schema": "0x218"
+    "isp_hook": "0x94856e59Ce9C7FfD6D69e00634c4b80692b6f4cE",
+    "schema": "0x21e"
   },
   {
     "name": "Have Valid Medical and are Older than 18",
     "description": "Extends the base circuit to verify valid medical data and additionally checks if the user is 18 years or older.",
     "zkey": "https://github.com/jbrit/sanicert/blob/43608fde4e4b631c4c1ebb823c48441ad075aefb/examples/legal.zkey",
     "wasm": "https://github.com/jbrit/sanicert/blob/43608fde4e4b631c4c1ebb823c48441ad075aefb/examples/legal.wasm",
-    "isp_hook": "0x4D080b3f8B19Cc2A48A2B60b177cF82711aEb7cB",
-    "schema": "0x219"
+    "isp_hook": "0xFDB2e8faFB56E05c0A8dB3BE37AEC50803e3c17B",
+    "schema": "0x21f"
   },
   {
     "name": "Have Both Yellow Fever and TB Vaccines",
     "description": "Verifies that the user has received both yellow fever and tuberculosis vaccines.",
     "zkey": "https://github.com/jbrit/sanicert/blob/43608fde4e4b631c4c1ebb823c48441ad075aefb/examples/vaccinated.zkey",
     "wasm": "https://github.com/jbrit/sanicert/blob/43608fde4e4b631c4c1ebb823c48441ad075aefb/examples/vaccinated.wasm",
-    "isp_hook": "0x75A6cDA2B7F54131404c96aE774713F7e29FCBD4",
-    "schema": "0x21a"
+    "isp_hook": "0x815165CBDe297b8e92E27aEaC0899C161246d3ae",
+    "schema": "0x220"
   }
 ]

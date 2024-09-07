@@ -12,8 +12,8 @@ const proofToBytes = ({proof, publicSignals}: {
   [
     [BigInt(proof.pi_a[0]), BigInt(proof.pi_a[1])],
     [
-      [BigInt(proof.pi_b[0][0]), BigInt(proof.pi_b[0][1])],
-      [BigInt(proof.pi_b[1][0]), BigInt(proof.pi_b[1][1])],
+      [BigInt(proof.pi_b[0][1]), BigInt(proof.pi_b[0][0])],
+      [BigInt(proof.pi_b[1][1]), BigInt(proof.pi_b[1][0])],
     ],
     [BigInt(proof.pi_c[0]), BigInt(proof.pi_c[1])],
     [BigInt(publicSignals[0]), BigInt(publicSignals[1])],
