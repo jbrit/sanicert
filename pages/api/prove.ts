@@ -65,17 +65,20 @@ export default async function handler(
     const eddsa = await getEddsa();
     const signMsg = (msg: Uint8Array) =>
       eddsa.signPoseidon(process.env.PRIVATE_KEY!, msg);
-
-    const { proof, timestamp } = await generateProof(data, signMsg);
-    if (
-      proof.publicSignals.length !== 2 ||
-      proof.publicSignals[0] !== data.user_id ||
-      proof.publicSignals[1] !== timestamp
-    )
-      return res.status(400).json({
-        message: "Incompatible proof request made",
-      });
-    return res.status(200).json(proof);
+    try {
+      
+      const { proof, timestamp, packedProof, user_id } = await generateProof(data, signMsg);
+      if (
+        proof.publicSignals.length !== 2 ||
+        proof.publicSignals[0] !== data.user_id ||
+        proof.publicSignals[1] !== timestamp
+      ) {
+        return res.status(400).json({message: "Incompatible proof request made"});
+      }
+      return res.status(200).json({user_id, timestamp, proof, packedProof});
+    } catch (error) {
+      return res.status(400).json({message: error});
+    }
   }
   return res.status(405).json({ error: { message: "Unsupported Request :(" } });
 }

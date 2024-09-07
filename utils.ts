@@ -1,7 +1,24 @@
 import { z } from "zod";
 import { faker } from "@faker-js/faker";
-import { groth16 } from "snarkjs";
+import { groth16, Groth16Proof, PublicSignals } from "snarkjs";
 import { buildEddsa, buildPoseidon, Eddsa, Signature } from "circomlibjs";
+import { encodePacked } from 'viem';
+
+const proofToBytes = ({proof, publicSignals}: {
+  proof: Groth16Proof;
+  publicSignals: PublicSignals;
+}) => encodePacked(
+  ['uint[2]','uint[2][2]','uint[2]','uint[2]'],
+  [
+    [BigInt(proof.pi_a[0]), BigInt(proof.pi_a[1])],
+    [
+      [BigInt(proof.pi_b[0][0]), BigInt(proof.pi_b[0][1])],
+      [BigInt(proof.pi_b[1][0]), BigInt(proof.pi_b[1][1])],
+    ],
+    [BigInt(proof.pi_c[0]), BigInt(proof.pi_c[1])],
+    [BigInt(publicSignals[0]), BigInt(publicSignals[1])],
+  ]
+)
 
 export const patientSchema = z.object({
   user_id: z.string().length(32),
@@ -35,15 +52,13 @@ export const getOrFakePatientData = (username: string): PatientData => {
   };
 };
 
-const wasmFile = "./circuit/medic.wasm"; // uploaded
-const zkeyFile = "./circuit/medic.zkey"; // uploaded
 
 export const generateProof = async (
   { user_id, age, has_tb_vaccine, has_yellow_fever_vaccine, wasm, zkey }: PatientData & {
     zkey: string;
     wasm: string;
   },
-  signer: (msg: Uint8Array) => Signature
+  signMsg: (msg: Uint8Array) => Signature
 ) => {
   const poseidon = await buildPoseidon();
   const timestamp = Date.now();
@@ -54,24 +69,26 @@ export const generateProof = async (
     +has_tb_vaccine,
     +has_yellow_fever_vaccine,
   ]);
-  const signature = signer(M);
-
+  const signature = signMsg(M);
+  const proof = await groth16.fullProve(
+    {
+      timestamp,
+      user_id,
+      age,
+      has_tb_vaccine: +has_tb_vaccine,
+      has_yellow_fever_vaccine: +has_yellow_fever_vaccine,
+      S: signature.S,
+      R8x: poseidon.F.toObject(signature.R8[0]),
+      R8y: poseidon.F.toObject(signature.R8[1]),
+    },
+    wasm,
+    zkey
+  )
   return {
+    user_id,
     timestamp: timestamp.toString(),
-    proof: await groth16.fullProve(
-      {
-        timestamp,
-        user_id,
-        age,
-        has_tb_vaccine: +has_tb_vaccine,
-        has_yellow_fever_vaccine: +has_yellow_fever_vaccine,
-        S: signature.S,
-        R8x: poseidon.F.toObject(signature.R8[0]),
-        R8y: poseidon.F.toObject(signature.R8[1]),
-      },
-      wasm,
-      zkey
-    ),
+    proof,
+    packedProof: proofToBytes(proof),
   };
 };
 

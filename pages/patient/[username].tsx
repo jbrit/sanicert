@@ -1,6 +1,6 @@
 import Layout from "@/components/layout";
 import { getOrFakePatientData, PatientData } from "@/utils";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
@@ -16,23 +16,33 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { ProofBox } from "@/components/proofbox";
+
+type ReturnType = {
+  user_id: string;
+  timestamp: string;
+  proof: string;
+  packedProof: string;
+}
 
 export default function UserInfo({
   username,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const mutation = useMutation({
     mutationFn: (data: FormData) =>
-      axios.create().post("/api/prove", data, {
+      axios.create().post<ReturnType>("/api/prove", data, {
         headers: { "Content-Type": "multipart/form-data" },
       }),
   });
   const toast = useToast();
   const router = useRouter();
+  const [packedProof, setPackedProof] = useState('');
   const wasmRef = useRef<HTMLInputElement>(null!);
   const zkeyRef = useRef<HTMLInputElement>(null!);
   const resetForm = () => {
     wasmRef.current.value = "";
     zkeyRef.current.value = "";
+    setPackedProof('');
   };
   const patientData = getOrFakePatientData(username);
   useEffect(() => {
@@ -120,6 +130,7 @@ export default function UserInfo({
                 }
                 const mut = await mutation.mutateAsync(formData);
                 resetForm();
+                setPackedProof(mut.data.packedProof);
               }}
               className="text-white"
             >
@@ -151,6 +162,7 @@ export default function UserInfo({
                 </Button>
               </div>
             </form>
+            {packedProof && <ProofBox proof={packedProof} />}
           </CardContent>
         </Card>
       </main>

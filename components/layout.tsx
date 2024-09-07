@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import Link from "next/link";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const geistSans = localFont({
   src: "../pages/fonts/GeistVF.woff",
@@ -22,11 +23,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
       >
-        <nav className="font-[family-name:var(--font-geist-mono)] font-semibold italic text-xl flex items-center">
+        <nav className="font-[family-name:var(--font-geist-mono)] font-semibold italic text-xl flex items-center justify-around w-full">
           <Link href="/#"><span className="mr-2 -mt-1 border-b border-green-300 inline-block">
             SANICERT
           </span>
-          <span>&#x2705;</span></Link>
+          <span>&#x2705;</span></Link> <ConnectButton />
         </nav>
         {children}
         <Toaster />

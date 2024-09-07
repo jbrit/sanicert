@@ -1,0 +1,10 @@
+[
+    {
+      "name": "user_id",
+      "type": "uint256"
+    },
+    {
+      "name": "timestamp",
+      "type": "uint256"
+    }
+]

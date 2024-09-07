@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Have Valid Medical Data",
+        "description": "Just uses the default circuit to attest a user has valid medical data.",
+        "zkey": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.zkey",
+        "wasm": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.wasm",
+        "schema": "0x20e"
+    },
+    {
+        "name": "Again - Have Valid Medical Data",
+        "description": "Just uses the default circuit to attest a user has valid medical data.",
+        "zkey": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.zkey",
+        "wasm": "https://github.com/jbrit/sanicert/blob/4c7234505149c4394af5e594113449aab15b2868/circuit/demo/medic.wasm",
+        "schema": "0x000"
+    }
+]
